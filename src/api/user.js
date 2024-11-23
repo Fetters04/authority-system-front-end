@@ -21,5 +21,5 @@ export async function getInfo() {
  * @returns
  */
 export async function logout(param) {
-  return await http.post('/api/sysUser/loginOut', param)
+  return await http.post('/api/sysUser/logout', param)
 }
