@@ -31,14 +31,17 @@ const mutations = {
 const actions = {
   // 用户登录
   login({ commit }, userInfo) {
+    // 从用户信息userInfo中解构出用户名和密码
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
+      // 调用src/api/user.js文件中的login()方法
       login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        // 将返回的 token 信息返回到 store
-        commit('SET_TOKEN', data.token)
-        // 将 token 保存到 cookie 中
-        setToken(data.token)
+        // 从response中解构出返回的token数据
+        const { token } = response
+        // 将返回的token数据保存到store中，作为全局变量使用
+        commit('SET_TOKEN', token)
+        // 将token信息保存到cookie中
+        setToken(token)
         resolve()
       }).catch(error => {
         reject(error)
