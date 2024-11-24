@@ -1,38 +1,53 @@
-import request from '@/utils/request'
+import http from '@/utils/request'
 
-export function getRoutes() {
-  return request({
-    url: '/vue-element-admin/routes',
-    method: 'get'
-  })
-}
-
-export function getRoles() {
-  return request({
-    url: '/vue-element-admin/roles',
-    method: 'get'
-  })
-}
-
-export function addRole(data) {
-  return request({
-    url: '/vue-element-admin/role',
-    method: 'post',
-    data
-  })
-}
-
-export function updateRole(id, data) {
-  return request({
-    url: `/vue-element-admin/role/${id}`,
-    method: 'put',
-    data
-  })
-}
-
-export function deleteRole(id) {
-  return request({
-    url: `/vue-element-admin/role/${id}`,
-    method: 'delete'
-  })
+export default {
+  /**
+   * 查询角色列表
+   * @returns
+   */
+  async getRoleListApi(params) {
+    return await http.get('/api/role/list', params)
+  },
+  /**
+   * 添加角色
+   * @returns
+   */
+  async addRoleApi(params) {
+    return await http.post('/api/role/add', params)
+  },
+  /**
+   * 编辑角色
+   * @returns
+   */
+  async updateRoleApi(params) {
+    return await http.put('/api/role/update', params)
+  },
+  /**
+   * 查询分配权限树列表
+   * @returns
+   */
+  async getAssignTreeApi(params) {
+    return await http.get('/api/role/getAssignPermissionTree', params)
+  },
+  /**
+   * 分配权限
+   * @returns
+   */
+  async assignSaveApi(params) {
+    return await http.post('/api/role/saveRoleAssign', params)
+  },
+  /**
+   * 检查角色是否被使用
+   * @returns
+   */
+  async checkRole(params) {
+    return await http.getRestApi('/api/role/check', params)
+  },
+  /**
+   * 删除角色
+   * @returns
+   */
+  async deleteRole(params) {
+    return await http.delete('/api/role/delete', params)
+  }
 }

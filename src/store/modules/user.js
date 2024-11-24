@@ -25,7 +25,11 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
-  }
+  },
+  //设置用户ID
+  SET_USERUID: (state, userId) => {
+    state.userId = userId
+  },
 }
 
 const actions = {
@@ -52,6 +56,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
+      // 调用api/user里面的getInfo方法获取用户信息和权限信息
       getInfo(state.token).then(response => {
         const { data } = response
 
@@ -59,19 +64,25 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar, introduction } = data
+        //此处解构出用户ID
+        const { roles, name, avatar, introduction, id } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
+          reject('用户未分配角色权限，请联系管理员！')
         }
 
+        // 将权限字段保存到sessionStorage中
+        sessionStorage.setItem('codeList', JSON.stringify(roles))
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
+        // 将用户ID保存到Vuex中
+        commit('SET_USERUID', id)
         resolve(data)
       }).catch(error => {
+        console.log(error)
         reject(error)
       })
     })
