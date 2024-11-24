@@ -181,160 +181,159 @@ export default {
       }
     }
   },
-  methods:
-    {
-      /**
-       * 查询部门列表
-       */
-      async search() {
-        //发送查询请求
-        let res = await departmentApi.getDepartmentList(this.searchModel)
-        //判断是否存在数据
-        if (res.success) {
-          //获取数据
-          this.tableData = res.data
-        }
+  methods: {
+    /**
+     * 查询部门列表
+     */
+    async search() {
+      //发送查询请求
+      let res = await departmentApi.getDepartmentList(this.searchModel)
+      //判断是否存在数据
+      if (res.success) {
+        //获取数据
+        this.tableData = res.data
       }
-      ,
-      /**
-       * 重置
-       */
-      resetValue() {
-        this.searchModel = {}//清空数据
-        this.search()//重新调用方法
-      },
-      /**
-       * 弹窗取消事件
-       */
-      onClose() {
-        //关闭窗口
-        this.deptDialog.visible = false
-      },
-      /**
-       * 弹窗确认事件
-       */
-      onConfirm() {
-        this.$refs.deptForm.validate(async(valid) => {
-          if (valid) {
-            let res = null//后端返回的数据
-            //判断部门ID是否有数据，如果部门ID为空，则表示新增，否则就是修改
-            if (this.dept.id === '') {//新增
-              //发送新增请求
-              res = await departmentApi.addDept(this.dept)
-            } else {
-              //发送修改请求
-              res = await departmentApi.updateDept(this.dept)
-            }
-            //判断是否成功
-            if (res.success) {
-              this.$message.success(res.message)
-              //刷新
-              this.search()
-              //关闭窗口
-              this.deptDialog.visible = false
-            } else {
-              this.$message.error(res.message)
-            }
+    }
+    ,
+    /**
+     * 重置
+     */
+    resetValue() {
+      this.searchModel = {}//清空数据
+      this.search()//重新调用方法
+    },
+    /**
+     * 弹窗取消事件
+     */
+    onClose() {
+      //关闭窗口
+      this.deptDialog.visible = false
+    },
+    /**
+     * 弹窗确认事件
+     */
+    onConfirm() {
+      this.$refs.deptForm.validate(async(valid) => {
+        if (valid) {
+          let res = null//后端返回的数据
+          //判断部门ID是否有数据，如果部门ID为空，则表示新增，否则就是修改
+          if (this.dept.id === '') {//新增
+            //发送新增请求
+            res = await departmentApi.addDept(this.dept)
+          } else {
+            //发送修改请求
+            res = await departmentApi.updateDept(this.dept)
           }
-        })
-      },
-      /**
-       * 打开添加部门窗口
-       */
-      openAddWindow() {
-        //清空表单数据
-        this.$resetForm('deptForm', this.dept)
-        //设置窗口标题
-        this.deptDialog.title = '新增部门'
-        //显示添加部门窗口
-        this.deptDialog.visible = true
-      },
-      /**
-       * 选择所属部门
-       */
-      async selectDepartment() {
-        //显示窗口
-        this.parentDialog.visible = true
-        //设置窗口标题
-        this.parentDialog.title = '选择所属部门'
-        //查询部门列表
-        let res = await departmentApi.getParentTreeList()
-        //判断是否成功
-        if (res.success) {
-          //赋值
-          this.treeList = res.data
-        }
-      },
-      /**
-       * 选择所属部门取消事件
-       */
-      parentOnClose() {
-        this.parentDialog.visible = false
-      },
-      /**
-       * 选择所属部门确认事件
-       */
-      parentOnConfirm() {
-        this.parentDialog.visible = false
-      },
-      /**
-       * 树节点点击事件
-       */
-      handleNodeClick(data) {
-        //当点击树节点时，赋予选中的值
-        this.dept.pid = data.id
-        this.dept.parentName = data.departmentName
-      },
-      /**
-       * 点击树节点+-号折叠展开事件
-       */
-      openBtn(data) {
-        //修改折叠展开状态
-        data.open = !data.open
-        this.$refs.parentTree.store.nodesMap[data.id].expanded = !data.open
-      },
-      /**
-       * 编辑部门
-       * @param row
-       */
-      handleEdit(row) {
-        //数据回显
-        this.$objCopy(row, this.dept)
-        //设置窗口标题
-        this.deptDialog.title = '编辑部门'
-        //显示编辑部门窗口
-        this.deptDialog.visible = true
-      },
-      /**
-       * 删除部门
-       */
-      async handleDelete(row) {
-        //查询部门下是否存在子部门或用户
-        let result = await departmentApi.checkDepartment({ id: row.id })
-        //判断是否可以删除
-        if (!result.success) {
-          //提示不能删除
-          this.$message.warning(result.message)
-        } else {
-          //确认是否删除
-          let confirm = await this.$myconfirm('确定要删除该数据吗?')
-          if (confirm) {
-            //发送删除请求
-            let res = await departmentApi.deleteById({ id: row.id })
-            //判断是否成功
-            if (res.success) {
-              //成功提示
-              this.$message.success(res.message)
-              //刷新
-              this.search()
-            } else {
-              //失败提示
-              this.$message.error(res.message)
-            }
+          //判断是否成功
+          if (res.success) {
+            this.$message.success(res.message)
+            //刷新
+            this.search()
+            //关闭窗口
+            this.deptDialog.visible = false
+          } else {
+            this.$message.error(res.message)
           }
         }
+      })
+    },
+    /**
+     * 打开添加部门窗口
+     */
+    openAddWindow() {
+      //清空表单数据
+      this.$resetForm('deptForm', this.dept)
+      //设置窗口标题
+      this.deptDialog.title = '新增部门'
+      //显示添加部门窗口
+      this.deptDialog.visible = true
+    },
+    /**
+     * 选择所属部门
+     */
+    async selectDepartment() {
+      //显示窗口
+      this.parentDialog.visible = true
+      //设置窗口标题
+      this.parentDialog.title = '选择所属部门'
+      //查询部门列表
+      let res = await departmentApi.getParentTreeList()
+      //判断是否成功
+      if (res.success) {
+        //赋值
+        this.treeList = res.data
       }
     },
+    /**
+     * 选择所属部门取消事件
+     */
+    parentOnClose() {
+      this.parentDialog.visible = false
+    },
+    /**
+     * 选择所属部门确认事件
+     */
+    parentOnConfirm() {
+      this.parentDialog.visible = false
+    },
+    /**
+     * 树节点点击事件
+     */
+    handleNodeClick(data) {
+      //当点击树节点时，赋予选中的值
+      this.dept.pid = data.id
+      this.dept.parentName = data.departmentName
+    },
+    /**
+     * 点击树节点+-号折叠展开事件
+     */
+    openBtn(data) {
+      //修改折叠展开状态
+      data.open = !data.open
+      this.$refs.parentTree.store.nodesMap[data.id].expanded = !data.open
+    },
+    /**
+     * 编辑部门
+     * @param row
+     */
+    handleEdit(row) {
+      //数据回显
+      this.$objCopy(row, this.dept)
+      //设置窗口标题
+      this.deptDialog.title = '编辑部门'
+      //显示编辑部门窗口
+      this.deptDialog.visible = true
+    },
+    /**
+     * 删除部门
+     */
+    async handleDelete(row) {
+      //查询部门下是否存在子部门或用户
+      let result = await departmentApi.checkDepartment({ id: row.id })
+      //判断是否可以删除
+      if (!result.success) {
+        //提示不能删除
+        this.$message.warning(result.message)
+      } else {
+        //确认是否删除
+        let confirm = await this.$myconfirm('确定要删除该数据吗?')
+        if (confirm) {
+          //发送删除请求
+          let res = await departmentApi.deleteById({ id: row.id })
+          //判断是否成功
+          if (res.success) {
+            //成功提示
+            this.$message.success(res.message)
+            //刷新
+            this.search()
+          } else {
+            //失败提示
+            this.$message.error(res.message)
+          }
+        }
+      }
+    }
+  },
   //初始化时执行
   created() {
     //调用查询部门列表方法
