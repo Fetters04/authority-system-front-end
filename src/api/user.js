@@ -23,3 +23,10 @@ export async function getInfo() {
 export async function logout(param) {
   return await http.post('/api/sysUser/logout', param)
 }
+
+/**
+ * 获取菜单数据
+ */
+export async function getMenuList(){
+  return await http.get("/api/sysUser/getMenuList");
+}

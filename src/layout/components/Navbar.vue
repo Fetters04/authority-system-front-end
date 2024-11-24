@@ -78,25 +78,24 @@ export default {
     /*
     * 用户退出登录
     *  */
-    logout() {
-      this.$confirm('确定退出系统吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async() => {
-        // 请求参数
+    async logout() {
+      //提示是否退出系统
+      let confirm = await this.$myconfirm('确定要退出系统吗?')
+      // 是否确认
+      if (confirm) {
+        //请求参数
         let params = { token: getToken() }
-        // 发送退出请求
+        //发送退出请求
         let res = await logout(params)
-        // 判断是否成功
+        //判断是否成功
         if (res.success) {
-          // 清空token
+          //清空token
           removeToken()
           clearStorage()
-          // 跳转到登录页面
+          //跳转到登录页面
           window.location.href = '/login'
         }
-      })
+      }
     }
   }
 }
