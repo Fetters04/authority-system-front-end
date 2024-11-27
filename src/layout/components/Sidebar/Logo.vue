@@ -24,8 +24,8 @@ export default {
   },
   data() {
     return {
-      title: 'Vue Element Admin',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      title: '权限管理系统',
+      logo: 'https://img0.baidu.com/it/u=284709515,1799212149&fm=253&fmt=auto&app=138&f=PNG?w=500&h=471'
     }
   }
 }

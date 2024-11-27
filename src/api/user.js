@@ -27,6 +27,67 @@ export async function logout(param) {
 /**
  * 获取菜单数据
  */
-export async function getMenuList(){
-  return await http.get("/api/sysUser/getMenuList");
+export async function getMenuList() {
+  return await http.get('/api/sysUser/getMenuList')
+}
+
+/**
+ * 查询用户列表
+ * @param params
+ * @returns
+ */
+export async function getUserList(params) {
+  return await http.get('/api/user/list', params)
+}
+
+/**
+ * 添加用户
+ * @param params
+ * @returns
+ */
+export async function addUser(params) {
+  return await http.post('/api/user/add', params)
+}
+
+/**
+ * 编辑用户
+ * @param params
+ * @returns
+ */
+export async function updateUser(params) {
+  return await http.put('/api/user/update', params)
+}
+
+/**
+ * 删除用户
+ * @param params
+ * @returns
+ */
+export async function deleteUser(params) {
+  return await http.delete('/api/user/delete', params)
+}
+
+/**
+ * 查询用户角色列表
+ * @param params
+ * @returns
+ */
+export async function getAssignRoleList(params) {
+  return await http.get('/api/user/getRoleListForAssign', params)
+}
+
+/**
+ * 获取分配角色列表数据
+ * @param params
+ * @returns
+ */
+export async function getRoleIdByUserId(params) {
+  return await http.getRestApi('/api/user/getRoleByUserId', params)
+}
+
+/**
+ * 分配角色
+ */
+export async function assignRoleSave(params) {
+  return await http.post('/api/user/saveUserRole', params)
 }
